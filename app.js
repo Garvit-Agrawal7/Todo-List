@@ -33,7 +33,7 @@ function calcTime() {
 
 app.post("/", (req, res) => {
     let todoText = req.body.todo;
-    currentTime = calcTime();
+    let currentTime = calcTime();
     todos.push({ text: todoText, time: currentTime });
     res.redirect("/")
 });
