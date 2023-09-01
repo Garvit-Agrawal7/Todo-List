@@ -14,8 +14,7 @@ app.get("/", (req, res) => {
     res.render("index.ejs", { todos: todos, time:time});
 });
 
-app.post("/", (req, res) => {
-    let todoText = req.body.todo;
+function calcTime() {
     const now = new Date();
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
@@ -25,9 +24,16 @@ app.post("/", (req, res) => {
     if (formattedHour > 12) {
         formattedHour %= 12
         currentTime = `${formattedHour}:${formattedMinute}pm`
+        return currentTime
     } else {
         currentTime = `${formattedHour}:${formattedMinute}am`
-    }
+        return currentTime
+    };
+};
+
+app.post("/", (req, res) => {
+    let todoText = req.body.todo;
+    currentTime = calcTime();
     todos.push({ text: todoText, time: currentTime });
     res.redirect("/")
 });
