@@ -8,10 +8,9 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended:true }));
 
 let todos = [];
-let time = [];
 
 app.get("/", (req, res) => {
-    res.render("index.ejs", { todos: todos, time:time});
+    res.render("index.ejs", { todos: todos });
 });
 
 function calcTime() {
