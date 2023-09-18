@@ -71,7 +71,6 @@ function calcDate() {
     return today.toLocaleDateString("en-US", options);
 }
 
-
 app.post("/", (req, res) => {
     let todoText = req.body.todo;
     const item = new Item({
