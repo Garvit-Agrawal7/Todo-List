@@ -1,17 +1,20 @@
 <%-include('base.ejs')%>
-<div class="container text-center mt-5">
-    <form action="/" method="POST" class="mb-3 d-flex flex-column flex-md-row justify-content-center align-items-center">
-        <div class="mb-3 me-md-3 my-4">
-        <input type="text" name="todo" placeholder="Enter To-Do here..." class="form-control" style="background-color: #F4EEEE; width: 145%; min-height: 50px; border: none;">
-        </div>
-            <input type="submit" name="submit" class="btn mt-2" style="background-color: #FFDBAA; min-height: 50px">
+
+<div id="heading">
+    <h1> <%= title %> </h1>
+</div>
+
+<div class="container text-center mt-5 box">
+    <form class="item" action="/" method="post">
+        <input type="text" name="todo" placeholder="New Item" autocomplete="off">
+        <input type="submit" value="+" id="submit-todo" name="list">
     </form></div>
 <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
     <div class="list-group">
         <% todos.forEach(function(todo) { %>
         <label class="list-group-item d-flex gap-3" style="background-color: #F4EEEE">
             <input class="form-check-input flex-shrink-0 todo-checkbox" type="checkbox" value="" style="font-size: 1.375em;">
-            <span class="pt-1 form-checked-content">
+            <span class="pt-1">
         <strong><%= todo.text %></strong>
         <small class="d-block text-body-secondary">
           <%=todo.time%>
@@ -21,22 +24,3 @@
         <% }); %>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const checkboxes = document.querySelectorAll(".todo-checkbox");
-
-        checkboxes.forEach(function(checkbox) {
-            checkbox.addEventListener("change", function() {
-                const strongElement = checkbox.nextElementSibling.querySelector("strong"); // Get the <strong> element within the same parent
-
-                if (checkbox.checked) {
-                    strongElement.style.textDecoration = "line-through";
-                } else {
-                    strongElement.style.textDecoration = "none";
-                }
-            });
-        });
-    });
-
-</script>
-
