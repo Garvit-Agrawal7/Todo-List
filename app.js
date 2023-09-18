@@ -1,17 +1,40 @@
 import express from "express";
 import bodyParser from "body-parser";
+import mongoose, {mongo} from "mongoose";
 
 const app = express();
 const port = 3000;
+mongoose.connect("mongodb://localhost:27017/TodoList")
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended:true }));
 
 let todos = [];
+const itemSchema = {
+    todo: String,
+    time: String
+}
+
+const Item = mongoose.model("Item", itemSchema)
 
 app.get("/", (req, res) => {
     res.render("index.ejs", { title: calcDate(), todos: todos });
 });
+
+const item1 = new Item({
+    todo: "Welcome to this TodoList!",
+})
+
+const item2 = new Item({
+    todo: "Type in your todo and hit the add button to create a todo"
+})
+
+const defaultItems = [item1, item2];
+
+Item.insertMany(defaultItems)
+    .catch(function (err) {
+        console.log(err)
+    })
 
 function calcTime() {
     const now = new Date();
@@ -43,8 +66,7 @@ function calcDate() {
 
 app.post("/", (req, res) => {
     let todoText = req.body.todo;
-    let currentTime = calcTime();
-    todos.push({ text: todoText, time: currentTime });
+    todos.push({ text: todoText, time: calcTime() });
     res.redirect("/")
 });
 
