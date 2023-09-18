@@ -16,6 +16,7 @@ input:checked+span {
 
 input[type="checkbox"] {
     margin: 20px;
+    padding: 10px
 }
 
 .item {
@@ -27,11 +28,6 @@ input[type="checkbox"] {
 
 .item:last-child {
     border-bottom: 0;
-}
-
-input:checked+p {
-    text-decoration: line-through;
-    text-decoration-color: #9EB384;
 }
 
 .box {

@@ -12,15 +12,18 @@
 <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
     <div class="list-group">
         <% todos.forEach(function(todo) { %>
-        <label class="list-group-item d-flex gap-3" style="background-color: #F4F4F4">
-            <input class="form-check-input flex-shrink-0 todo-checkbox" type="checkbox" value="" style="font-size: 1.375em;">
-            <span class="pt-1">
+        <label class="list-group-item d-flex gap-3" style="background-color: #F4F4F4; max-height: 100px">
+            <form action="/delete" method="post">
+            <input class="form-check-input todo-checkbox" type="checkbox" name="checkbox" value="<%=todo._id%>" style="font-size: 1.375em;" onchange="this.form.submit()">
+            </form>
+                <span class="pt-1">
         <strong><%= todo.text %></strong>
         <small class="d-block text-body-secondary">
           <%=todo.time%>
         </small>
       </span>
         </label>
+
         <% }); %>
     </div>
 </div>

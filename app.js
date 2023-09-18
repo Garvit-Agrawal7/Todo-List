@@ -9,32 +9,40 @@ mongoose.connect("mongodb://localhost:27017/TodoList")
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended:true }));
 
-let todos = [];
 const itemSchema = {
-    todo: String,
+    text: String,
     time: String
 }
 
 const Item = mongoose.model("Item", itemSchema)
 
-app.get("/", (req, res) => {
-    res.render("index.ejs", { title: calcDate(), todos: todos });
-});
-
 const item1 = new Item({
-    todo: "Welcome to this TodoList!",
+    text: "Welcome to this TodoList!",
+    time: calcTime()
 })
 
 const item2 = new Item({
-    todo: "Type in your todo and hit the add button to create a todo"
+    text: "Type in your todo and hit the add button to create a todo",
+    time: calcTime()
 })
 
 const defaultItems = [item1, item2];
 
-Item.insertMany(defaultItems)
-    .catch(function (err) {
-        console.log(err)
-    })
+app.get("/", (req, res) => {
+    Item.find({})
+        .then(function (todos) {
+            if (todos.length === 0) {
+                Item.insertMany(defaultItems)
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+            }
+            res.render("index.ejs", { title: calcDate(), todos: todos });
+        })
+        .catch(function (err) {
+            console.log(err)
+        })
+});
 
 function calcTime() {
     const now = new Date();
@@ -66,8 +74,20 @@ function calcDate() {
 
 app.post("/", (req, res) => {
     let todoText = req.body.todo;
-    todos.push({ text: todoText, time: calcTime() });
+    const item = new Item({
+        text: todoText,
+        time: calcTime()
+    });
+    item.save();
     res.redirect("/")
 });
+
+app.post("/delete", (req, res) => {
+    Item.findByIdAndRemove(req.body.checkbox)
+        .catch(function (err) {
+            console.log(err)
+        })
+    res.redirect("/")
+})
 
 app.listen(port)
